@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    </head>
+    <body ng-controller="bodyController">
+        <div class="container-left">
+            <div class="library">
+                <h4 id="h1"> LIBRARY </h4> 
+            </div>
+            <div class="container1">
+                <thumbs ng-repeat="data in videoService.library"></thumbs>
+            </div>
+            <div class="add_form_field">
+                <a ng-click="addNew()" class="add"><img src="images/add.png" class="button_add"></a>
+            </div>
+        </div>
+        <div class="container-right">
+            <div class="container-right-top">
+            <div ng-if="! videoService.currentVideo">
+                <div id="container-cancel">
+                    <p id="h3">CANCEL</p>
+                    <a class="cancel-link" ng-click="linkCancel()"><img src="images/cancel.png" id="cancel-link-button"></a>
+                </div>
+                <div id="input">
+                    <input id="textInput" type="text" placeholder="insert video url here" ng-model="videoURL.url" ng-model-options="{getterSetter: true, debounce: {'default': 500, 'blur': 0}}" />
+                </div>
+            </div>
+            <div ng-if="videoService.currentVideo">
+                <div class="player_video">
+                    <div id="player"></div>
+                </div>
+                <div id="control">
+                    <div id="side-control">
+                        <div id="playback" ng-click="playVideo()">
+                            <i id="play" class="material-icons" style="color: white; font-size: 2rem;">{{ !videoOnPlay? 'play_arrow' : 'pause' }}</i>
+                        </div>
+                    </div>
+                    <div id="middle-control">
+                        
+                    </div>
+                    <div id="side-control">
+                        <span id="duration">{{ data.time }}</span>
+                        <div ng-click="mute()">
+                            <i id="mute-toggle" class="material-icons">{{ !videoSound? 'volume_off' : 'volume_up' }}</i>
+                        </div>
+                    </div>
+                </div>
+                <div id="text-video">
+                    <div class="drop"></div>
+                    <input id="h4" placeholder="Drop Point {{ data.count }}">
+                    <div class="descript"></div>
+                    <input id="descript" placeholder="Enter Description">
+                </div>
+            </div>
+        </div>
+        <div class="container-right-bottom">
+            <ul class="container2">
+                <div class="intro">
+                    <p id="h2">Intro</p> 
+                </div>
+                <br>
+                <intro ng-repeat="data in videoService.intro"></intro>
+                <div class="border_add">
+                    <a ng-click="addIntro()" class="intro_add"> <img src="images/add.png" class="intro_add_button"> </a>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+        <!-- Templates 1 -->
+        <script id="libraryThumbTemplate" type="text/ng-template">
+            <div id="thumb">
+                <img ng-src="{{ data.thumb }}" style="width: 123px; height: 70px;" /> 
+                <div class="num">
+                    <div id="nomer"></div>
+                </div>
+                <a class="delete" ng-click="removeData(data.$$hashKey)"><img src="images/clear.png" class="button_delete"></a>
+            </div>
+        </script>
+        
+        <!-- Template 2 -->
+        <script id="introSelectTemplate" type="text/ng-template">
+            <div class="colors" style="background-color:{{ data.color }};" ng-click="cueVideo(data.id)">
+                <li class="numbers">
+                    <h3>{{ data.count }}</h3>
+                </li>
+                <div class="property">
+                    <p id="p"> VIDEO </p>
+                        <div id="myDropdown" class="dropdown-content">
+                            <select id="list" onchange="getSelectValue();">
+                                <option ng-click="cueVideo(data.id)" ng-repeat="data in videoService.library">{{ data.id }}</option>
+                            </select>
+                        </div>
+                    <div class="paint">
+                        <img src="images/paint3.png" style ="width: 15px; height: 15px; bottom: 33px; position: relative; left: 145px">
+                        <button class="kotak_paint" style="background-color:{{ data.color }};" ng-click="changeColor(data.$$changeKey)"></button>
+                    </div>
+                    <div class="test_play" id="playbtn">
+                        <input type="image" class="play1" src="images/play.png" style ="width: 25px; height: 25px;">
+                        <h1 id="introh1">TEST <br> PLAY </h1>
+                    </div>
+                    <h2 id="introh2"> START </h2>
+                    <span id="slider_start">0:00</span>
+                    <h3 id="introh3"> END </h3>
+                    <span id="slider_end">0:00</span>
+                </div>
+            </div>
+        </script>
+
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <script src="js/script.js"></script>
+    </body>
+</html>
